@@ -31,10 +31,10 @@ func startWatchers() {
 
 	waitGroup := sync.WaitGroup{}
 	for _, config := range configs {
-		go func() {
+		go func(currentConfig watcherModels.Config) {
 			defer waitGroup.Done()
-			watcher.Watch(config)
-		}()
+			watcher.Watch(currentConfig)
+		}(config)
 
 		waitGroup.Add(1)
 	}
