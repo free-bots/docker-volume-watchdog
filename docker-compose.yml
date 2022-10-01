@@ -1,0 +1,20 @@
+services:
+  docker-volume-watchdog:
+    container_name: docker-volume-watchdog
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - DOCKER_VOLUME_WATCHDOG_DISCORD_WEBHOOK=YOUR WEBHOOK URL
+        - DOCKER_VOLUME_WATCHDOG_INTERVAL_VALUE=10 # in minutes
+    deploy:
+      resources:
+        limits:
+          memory: "32m"
+          cpus: "1"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - /YOUR VOLUME/:/watch-dog-mount/YOUR VOLUME/
