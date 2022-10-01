@@ -1,3 +1,5 @@
+version: "3"
+
 services:
   docker-volume-watchdog:
     container_name: docker-volume-watchdog
@@ -18,3 +20,4 @@ services:
       - TZ=Europe/Berlin
     volumes:
       - /YOUR VOLUME/:/watch-dog-mount/YOUR VOLUME/
+    restart: unless-stopped

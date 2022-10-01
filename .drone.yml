@@ -1,0 +1,23 @@
+kind: pipeline
+type: docker
+name: push-to-registry
+
+steps:
+  - name: docker
+    image: plugins/docker
+    settings:
+      repo: bots-server:5000/free-bots/docker-volume-watchdog
+      tags: latest
+      registry: bots-server:5000
+      force_tag: true
+      insecure: true
+    when:
+      branch: master
+  - name: redeploy
+    image: plugins/webhook
+    settings:
+      urls: http://bots-server:1150/redeploy
+      content_type: application/json
+      template: { "stack": "volume-watchdog" }
+    when:
+      branch: master
