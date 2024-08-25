@@ -1,0 +1,31 @@
+name: Deploy new version
+run-name: Deployer
+on:
+  push:
+    branches:
+    - master
+
+env:
+  DOCKER_BUILD_SUMMARY: false
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          config-inline: |
+            [registry."${{ vars.DOCKER_REGISTRY }}"]
+              http=true
+              insecure=true
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ vars.DOCKER_REGISTRY }}/free-bots/docker-volume-watchdog:latest
+      - name: Webhook
+        run: 'curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"stack\": \"volume-watchdog\"}" ${{ vars.REDEPLOY_URL }}'
