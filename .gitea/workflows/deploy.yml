@@ -28,4 +28,4 @@ jobs:
           push: true
           tags: ${{ vars.DOCKER_REGISTRY }}/free-bots/docker-volume-watchdog:latest
       - name: Webhook
-        run: 'curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"stack\": \"volume-watchdog\"}" ${{ vars.REDEPLOY_URL }}'
+        run: 'curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"project\": \"volume-watchdog\"}" ${{ vars.REDEPLOY_URL }}'
